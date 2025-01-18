@@ -72,3 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+# マシンリストボタン
+class MachineType extends StatelessWidget {
+  const MachineType({super.key});
+
+}
