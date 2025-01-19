@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GymLog',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 204, 177, 250)),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -32,11 +33,20 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height; // 画面の高さを取得
+
     return Scaffold(
-      appBar: AppBar(title: Text('筋トレ記録')),
+      appBar: AppBar(
+        title: Text('筋トレ記録アプリ'),
+        backgroundColor: Colors.deepPurple,
+        centerTitle: true,
+      ),
       body: Column(
         children: [
-          TopSection(title: 'Hello World!'), // 時刻とトレーニング開始時刻
+          SizedBox(
+            height: screenHeight / 3, // 画面の高さの3分の1の高さ
+            child: TopSection(title: 'Hello World!'), // 時刻とトレーニング開始時刻
+          ),
           Expanded(
             child: MenuList(),
           ), // 筋トレメニューリスト
@@ -75,9 +85,11 @@ class _TopSectionState extends State<TopSection> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center, // 水平方向に中央揃え
+      crossAxisAlignment: CrossAxisAlignment.center,
+
       children: [
         Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text("現在の時刻"),
             Text(
@@ -86,6 +98,7 @@ class _TopSectionState extends State<TopSection> {
             ),
           ],
         ),
+        SizedBox(width: 24), // ウィジェット間の横方向の余白を追加
         Column(
           children: [
             ElevatedButton(
@@ -106,13 +119,27 @@ class MenuList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        Text('チェストプレス'),
-        Text('チェストプレス'),
-        Text('チェストプレス'),
-        Text('チェストプレス'),
-        Text('チェストプレス'),
-        Text('チェストプレス'),
-        Text('チェストプレス'),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
+        Center(
+          child: Text('チェストプレス'),
+        ),
       ],
     );
   }
