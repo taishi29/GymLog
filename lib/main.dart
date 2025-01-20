@@ -115,32 +115,28 @@ class _TopSectionState extends State<TopSection> {
 
 // メニューリスト
 class MenuList extends StatelessWidget {
+  final List<String> menu = [
+    'チェストプレス',
+    'ラットプルダウン',
+    'スクワット',
+    'デッドリフト',
+    'ショルダープレス',
+    '腹筋',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-        Center(
-          child: Text('チェストプレス'),
-        ),
-      ],
+    return ListView.builder(
+      itemCount: menu.length, // リストの長さを指定
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            menu[index],
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30),
+          ), // リストの各項目を表示
+        );
+      },
     );
   }
 }
