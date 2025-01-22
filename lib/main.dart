@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 // DateTimeクラスパッケージ
 import 'package:intl/intl.dart';
-
 import 'dart:async';
+// ListViewのアニメーション
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // main関数
 void main() {
@@ -18,8 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'GymLog',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 204, 177, 250)),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('筋トレ記録アプリ'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color.fromARGB(255, 191, 255, 168),
         centerTitle: true,
       ),
       body: Column(
@@ -89,25 +89,31 @@ class _TopSectionState extends State<TopSection> {
       crossAxisAlignment: CrossAxisAlignment.center,
 
       children: [
-        Column(
-          children: [
-            Text("現在の時刻"),
-            Text(
-              nowTime,
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        Container(
+          margin: EdgeInsets.only(top: 80, left: 40), // 上と左に50の余白を追加
+          child: Column(
+            children: [
+              Text("現在の時刻"),
+              Text(
+                nowTime,
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ],
+          ),
         ),
-        SizedBox(width: 24), // ウィジェット間の横方向の余白を追加
-        Column(
-          children: [
-            ElevatedButton(
-              onPressed: () {/* ボタンがタップされた時の処理 */},
-              child: Text('トレーニング開始'),
-            ),
-            Text('not depelopment')
-          ],
-        )
+        SizedBox(width: 24), // 横方向の余白
+        Container(
+          margin: EdgeInsets.only(top: 70, right: 40), // 上と左に50の余白を追加
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {/* ボタンがタップされた時の処理 */},
+                child: Text('トレーニング開始'),
+              ),
+              Text('not depelopment')
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -127,16 +133,26 @@ class MenuList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: menu.length, // リストの長さを指定
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(
-            menu[index],
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30),
-          ), // リストの各項目を表示
-        );
-      },
-    );
+        itemCount: menu.length, // リストの長さを指定
+        itemBuilder: (context, index) {
+          return Container(
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: ListTile(
+              tileColor: const Color.fromARGB(255, 255, 255, 255),
+              title: Text(
+                menu[index],
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30),
+              ), // リストの各項目を表示
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                side: BorderSide(
+                  color: Colors.black, // 枠線の色
+                  width: 2, // 枠線の太さ
+                ),
+              ),
+            ),
+          );
+        });
   }
 }
