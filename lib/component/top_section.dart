@@ -17,10 +17,10 @@ class _TopSectionState extends State<TopSection> {
   int index = 0;
 
   @override
-  // 時刻を一秒ごとに更新するための関数
   void initState() {
     super.initState();
-    Timer.periodic(Duration(seconds: 1), _onTimer);
+    // 時刻を一秒ごとに更新するタイマー
+    Timer.periodic(const Duration(seconds: 1), _onTimer);
   }
 
   void _onTimer(Timer timer) {
@@ -33,32 +33,57 @@ class _TopSectionState extends State<TopSection> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center, // 水平方向に中央揃え
       crossAxisAlignment: CrossAxisAlignment.center,
-
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 80, left: 40), // 上と左に50の余白を追加
-          child: Column(
-            children: [
-              Text("現在の時刻"),
-              Text(
-                nowTime,
-                style: Theme.of(context).textTheme.headlineMedium,
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              // 外側の円
+              height: 180,
+              width: 180,
+              decoration: const BoxDecoration(
+                color: Colors.blue,
+                shape: BoxShape.circle,
               ),
-            ],
-          ),
+            ),
+            Container(
+              // 内側の円
+              height: 150,
+              width: 150,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                shape: BoxShape.circle,
+              ),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("現在の時刻"),
+                Text(
+                  nowTime,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
+            ),
+          ],
         ),
-        SizedBox(width: 24), // 横方向の余白
-        Container(
-          margin: EdgeInsets.only(top: 70, right: 40), // 上と左に50の余白を追加
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {/* ボタンがタップされた時の処理 */},
-                child: Text('トレーニング開始'),
-              ),
-              Text('not depelopment')
-            ],
-          ),
+        const SizedBox(width: 24), // 横方向の余白
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    // ボタンがタップされた時の処理
+                  },
+                  child: const Text('トレーニング開始'),
+                ),
+                const Text('not development'),
+              ],
+            ),
+          ],
         ),
       ],
     );

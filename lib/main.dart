@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart'; // ListViewのアニメーション
 
 // screens
 import 'package:gymlog/screens/log.dart';
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'GymLog',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 50, 47, 47)),
+            seedColor: const Color.fromARGB(255, 255, 255, 255)),
         useMaterial3: true,
       ),
       home: const HomeScreen(),
