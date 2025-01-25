@@ -14,6 +14,7 @@ class TopSection extends StatefulWidget {
 
 class _TopSectionState extends State<TopSection> {
   String nowTime = DateFormat('HH:mm:ss').format(DateTime.now()).toString();
+  String startTime = '';
   int index = 0;
 
   @override
@@ -77,10 +78,13 @@ class _TopSectionState extends State<TopSection> {
                 ElevatedButton(
                   onPressed: () {
                     // ボタンがタップされた時の処理
+                    startTime = nowTime;
                   },
                   child: const Text('トレーニング開始'),
                 ),
-                const Text('not development'),
+                const SizedBox(height: 10), // 縦方向の余白
+                Text(startTime,
+                    style: Theme.of(context).textTheme.headlineMedium),
               ],
             ),
           ],

@@ -48,6 +48,7 @@ class HomeScreen extends StatelessWidget {
             height: screenHeight / 3, // 画面の高さの3分の1の高さ
             child: TopSection(title: 'Hello World!'), // 時刻とトレーニング開始時刻
           ),
+          const Divider(),
           Expanded(
             child: MenuList(),
           ), // 筋トレメニューリスト
