@@ -17,6 +17,7 @@ class DatabaseHelper {
     return _database!; // 初期化後のインスタンスを返す
   }
 
+  // データベース初期作成
   Future<Database> _initDatabase() async {
     // getDatabasesPath:SQLiteデータベースが保存されるディレクトリのパスを取得する非同期関数
     // openDatabase:指定されたファイルパスにSQLiteデータベースを開く、または新規作成する関数
@@ -53,10 +54,30 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Map<String, dynamic>>> getWorkouts() async {
+  // テーブルのデータを取得
+  Future<List<Map<String, dynamic>>> getMenu() async {
+    // トレーニングメニューテーブル
     final db = await database;
-    return await db.query('workouts');
+    return await db.query('training_menu');
   }
 
-  // 他のCRUD操作を追加
+  Future<List<Map<String, dynamic>>> getRecord() async {
+    // レコードテーブル
+    final db = await database;
+    return await db.query('record');
+  }
+
+  // データの挿入
+  // トレーニングメニューにデータを追加するメソッド
+  Future<int> insertMenu(Map<String, dynamic> row) async {
+    final db = await database;
+    return await db.insert('training_menu', row);
+  }
+
+  // 特定のレコードを削除するメソッド
+  Future<int> deleteMenu(int id) async {
+    final db = await database;
+    return await db
+        .delete('training_menu', where: 'training_id = ?', whereArgs: [id]);
+  }
 }
