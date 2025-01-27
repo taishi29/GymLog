@@ -32,7 +32,7 @@ class DatabaseHelper {
           training_id INTEGER PRIMARY KEY AUTOINCREMENT,
           training_name TEXT NOT NULL UNIQUE,
           seat_height INTEGER,
-          arm_osition INTEGER,
+          arm_position INTEGER
         )
       ''');
 
@@ -40,20 +40,13 @@ class DatabaseHelper {
         await db.execute('''
         CREATE TABLE record (
           record_id INTEGER PRIMARY KEY AUTOINCREMENT,
-          training_name TEXT NOT NULL,
+          training_id INTEGER NOT NULL,
           set_number INTEGER NOT NULL,
           weight INTEGER NOT NULL,
           count INTEGER,
           minutes INTEGER,
-          FOREIGN KEY (training_name) REFERENCES training_menu(training_name),
-        )
-      ''');
-
-        // テーブル2: record_date
-        await db.execute('''
-        CREATE TABLE record_date (
-          date INTEGER PRIMARY KEY AUTOINCREMENT,
-          time INTEGER,
+          date_time TEXT NOT NULL,
+          FOREIGN KEY (training_id) REFERENCES training_menu(training_id)
         )
       ''');
       },
