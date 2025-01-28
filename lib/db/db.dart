@@ -80,4 +80,6 @@ class DatabaseHelper {
     return await db
         .delete('training_menu', where: 'training_id = ?', whereArgs: [id]);
   }
+
+  // データの編集
 }
