@@ -74,6 +74,12 @@ class DatabaseHelper {
     return await db.insert('training_menu', row);
   }
 
+  // レコードにデータを追加するメソッド
+  Future<int> insertRecord(Map<String, dynamic> row) async {
+    final db = await database;
+    return await db.insert('record', row);
+  }
+
   // 特定のレコードを削除するメソッド
   Future<int> deleteMenu(int id) async {
     final db = await database;

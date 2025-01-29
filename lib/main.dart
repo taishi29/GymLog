@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gymlog/screens/log.dart';
 // component
 import 'package:gymlog/component/top_section.dart';
+import 'package:gymlog/component/custom_drawer.dart';
 
 // main関数
 void main() {
@@ -42,6 +43,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 191, 255, 168),
         centerTitle: true,
       ),
+      drawer: const CustomDrawer(), // メニューボタンがAppBarの左端に表示される。
       body: Column(
         children: [
           SizedBox(
