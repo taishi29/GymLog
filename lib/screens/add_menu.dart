@@ -110,6 +110,34 @@ class AddMenuState extends State<AddMenu> {
                 ),
               ],
             ),
+
+            SizedBox(height: 40.0), // テキストとTextFieldの間に余白を追加
+
+            // 保存ボタン
+            Center(
+              child: ElevatedButton.icon(
+                label: const Text('保存'),
+                onPressed: () {},
+                icon: const Icon(Icons.upload, size: 20),
+                style: ButtonStyle(
+                  backgroundColor:
+                      WidgetStateProperty.resolveWith<Color>((states) {
+                    if (states.contains(WidgetState.pressed)) {
+                      return const Color.fromARGB(255, 249, 85, 85); // 押したとき
+                    }
+                    if (states.contains(WidgetState.hovered)) {
+                      return const Color.fromARGB(255, 249, 80, 80); // ホバー時
+                    }
+                    return const Color.fromARGB(255, 255, 140, 127); // 通常時
+                  }),
+                  minimumSize:
+                      WidgetStateProperty.all(Size(110, 50)), // ボタンのサイズ
+                  textStyle: WidgetStateProperty.all(
+                    const TextStyle(fontSize: 20, color: Colors.black),
+                  ), // 文字サイズ
+                ),
+              ),
+            ),
           ],
         ),
       ),
