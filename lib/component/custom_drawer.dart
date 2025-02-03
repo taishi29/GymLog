@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymlog/screens/add_menu.dart';
 import 'package:gymlog/screens/log.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -22,7 +23,7 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LogPage()),
+                  MaterialPageRoute(builder: (context) => AddMenu()),
                 );
               },
             ),
