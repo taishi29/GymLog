@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gymlog/db/db.dart';
 
 class AddMenu extends StatefulWidget {
   const AddMenu({super.key});
@@ -11,8 +12,9 @@ class AddMenuState extends State<AddMenu> {
   int? seatHeight;
   int? armPosition;
   String? trainingName;
-  final _formKey = GlobalKey<
-      FormState>(); // このキーを配置したWidgetの状態(今回はForm)に、同じ State クラス内のどこからでもアクセスできる。
+  // このキーを配置したWidgetの状態(今回はForm)に、同じ State クラス内のどこからでもアクセスできる。
+  final _formKey = GlobalKey<FormState>();
+  final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -116,13 +118,22 @@ class AddMenuState extends State<AddMenu> {
             Center(
               child: ElevatedButton.icon(
                 label: const Text('保存'),
-                onPressed: () {
+                onPressed: () async {
                   // _formKey.currentState を取得し、その FormState が null でないことを保証して .validate() を実行する
                   // そして、validate() は validator で定義したルールに従っていたら、nullを返す。
                   if (_formKey.currentState!.validate()) {
-                    setState(() {
-                      print(trainingName);
-                    });
+                    try {
+                      Map<String, dynamic> row =
+                          insertValue(trainingName, seatHeight, armPosition);
+                      await dbHelper.insertMenu(row);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('追加しました！')),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('エラーが発生しました: $e')),
+                      );
+                    }
                   }
                 },
                 icon: const Icon(Icons.upload, size: 20),
@@ -150,4 +161,13 @@ class AddMenuState extends State<AddMenu> {
       ),
     );
   }
+}
+
+Map<String, dynamic> insertValue(
+    String? trainingName, int? seatHeight, int? armPosition) {
+  return {
+    "training_name": trainingName,
+    "seat_height": seatHeight,
+    "arm_position": armPosition,
+  };
 }
