@@ -10,131 +10,138 @@ class AddMenu extends StatefulWidget {
 class AddMenuState extends State<AddMenu> {
   int? seatHeight;
   int? armPosition;
+  String? trainingName;
+  final _formKey = GlobalKey<
+      FormState>(); // このキーを配置したWidgetの状態(今回はForm)に、同じ State クラス内のどこからでもアクセスできる。
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('トレーニングメニュー追加'),
+        title: const Text('トレーニングメニュー追加'),
         backgroundColor: const Color.fromARGB(255, 191, 255, 168),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(24.0), // 余白を追加,
+        padding: const EdgeInsets.all(24.0), // Column全体の外側に余白ができる。
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start, // 左寄せにする
+          crossAxisAlignment:
+              CrossAxisAlignment.start, // childrenにある要素を、左寄せにする。
           children: [
             // トレーニング名
-            Text(
+            const Text(
               'トレーニング名',
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 太字
-                fontSize: 16.0, // 文字サイズ（適宜調整）
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
-            SizedBox(height: 8.0), // テキストとTextFieldの間に余白を追加
-            TextField(
-              decoration: InputDecoration(
-                labelText: 'トレーニング名',
-                hintText: 'チェストプレス',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            const SizedBox(height: 8.0),
+            Form(
+              key: _formKey, // このFormの状態を管理する。
+              child: TextFormField(
+                decoration: const InputDecoration(
+                  // TextFormFieldの見た目を変更するクラス
+                  labelText: 'トレーニング名',
+                  hintText: 'チェストプレス',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  ),
                 ),
+                // onChangedはTextFieldに入力されたときに呼ばれる関数。valueには入力したての内容が渡される。
+                // (引数) => 処理内容
+                onChanged: (value) => trainingName = value,
+                // 備考：onChangedとvalidatorの引数は、任意の名前でOK! それぞれ、関数ごとに変数は独立している。
+                validator: (value) {
+                  // このvalueはフォームの現在の入力値
+                  if (value == null || value.isEmpty) {
+                    // isEmptyはStringやListなどの変数が、空かどうかを判定するプロパティ
+                    return 'トレーニング名を入力してください。';
+                  }
+                  return null;
+                },
               ),
             ),
 
-            SizedBox(height: 24.0), // テキストとTextFieldの間に余白を追加
+            const SizedBox(height: 24.0),
 
             // シートの高さ
-            Text(
+            const Text(
               'シートの高さ',
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 太字
-                fontSize: 16.0, // 文字サイズ（適宜調整）
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
-            SizedBox(height: 8.0), // テキストとTextFieldの間に余白を追加
+            const SizedBox(height: 8.0),
             DropdownButton<int?>(
               value: seatHeight,
-              hint: Text("数値を選択してください。"),
+              hint: const Text("数値を選択してください。"),
               onChanged: (int? selectedValue) {
-                setState(() {
-                  seatHeight = selectedValue;
-                });
+                setState(() => seatHeight = selectedValue);
               },
               items: [
-                DropdownMenuItem(
-                  value: null,
-                  child: Text("なし"),
-                ),
+                const DropdownMenuItem(value: null, child: Text("なし")),
                 ...List.generate(
                   10,
                   (index) => DropdownMenuItem(
-                    value: index + 1, // 各選択肢の値
-                    child: Text("${index + 1}"), // 選択肢の表示
+                    value: index + 1,
+                    child: Text("${index + 1}"),
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 24.0), // テキストとTextFieldの間に余白を追加
+            const SizedBox(height: 24.0),
 
             // アームの位置
-            Text(
+            const Text(
               'アームの位置',
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // 太字
-                fontSize: 16.0, // 文字サイズ（適宜調整）
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
-            SizedBox(height: 8.0), // テキストとTextFieldの間に余白を追加
-            DropdownButton<int>(
+            const SizedBox(height: 8.0),
+            DropdownButton<int?>(
               value: armPosition,
-              hint: Text("数値を選択してください。"),
+              hint: const Text("数値を選択してください。"),
               onChanged: (int? selectedValue) {
-                setState(() {
-                  armPosition = selectedValue;
-                });
+                setState(() => armPosition = selectedValue);
               },
               items: [
-                DropdownMenuItem(
-                  value: null,
-                  child: Text("なし"),
-                ),
+                const DropdownMenuItem(value: null, child: Text("なし")),
                 ...List.generate(
                   10,
                   (index) => DropdownMenuItem(
-                    value: index + 1, // 各選択肢の値
-                    child: Text("${index + 1}"), // 選択肢の表示
+                    value: index + 1,
+                    child: Text("${index + 1}"),
                   ),
                 ),
               ],
             ),
-
-            SizedBox(height: 40.0), // テキストとTextFieldの間に余白を追加
+            const SizedBox(height: 40.0),
 
             // 保存ボタン
             Center(
               child: ElevatedButton.icon(
                 label: const Text('保存'),
-                onPressed: () {},
+                onPressed: () {
+                  // _formKey.currentState を取得し、その FormState が null でないことを保証して .validate() を実行する
+                  // そして、validate() は validator で定義したルールに従っていたら、nullを返す。
+                  if (_formKey.currentState!.validate()) {
+                    setState(() {
+                      print(trainingName);
+                    });
+                  }
+                },
                 icon: const Icon(Icons.upload, size: 20),
                 style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.resolveWith<Color>((states) {
-                    if (states.contains(WidgetState.pressed)) {
-                      return const Color.fromARGB(255, 249, 85, 85); // 押したとき
-                    }
-                    if (states.contains(WidgetState.hovered)) {
-                      return const Color.fromARGB(255, 249, 80, 80); // ホバー時
-                    }
-                    return const Color.fromARGB(255, 255, 140, 127); // 通常時
-                  }),
-                  minimumSize:
-                      WidgetStateProperty.all(Size(110, 50)), // ボタンのサイズ
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (states) {
+                      if (states.contains(WidgetState.pressed)) {
+                        return const Color.fromARGB(255, 249, 85, 85);
+                      }
+                      if (states.contains(WidgetState.hovered)) {
+                        return const Color.fromARGB(255, 249, 80, 80);
+                      }
+                      return const Color.fromARGB(255, 255, 140, 127);
+                    },
+                  ),
+                  minimumSize: WidgetStateProperty.all(const Size(110, 50)),
                   textStyle: WidgetStateProperty.all(
                     const TextStyle(fontSize: 20, color: Colors.black),
-                  ), // 文字サイズ
+                  ),
                 ),
               ),
             ),
