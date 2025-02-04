@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 import 'package:path/path.dart'; // ファイルパスを操作するためのユーティリティ
-import 'package:path_provider/path_provider.dart'; // アプリが使用できるディレクトリ（パス）を取得するためのツール
+// import 'package:path_provider/path_provider.dart'; // アプリが使用できるディレクトリ（パス）を取得するためのツール
 
 class DatabaseHelper {
   // static:クラス全体で溶融されるインスタンス変数
