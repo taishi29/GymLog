@@ -12,8 +12,10 @@ class AddMenuState extends State<AddMenu> {
   int? seatHeight;
   int? armPosition;
   String? trainingName;
-  // このキーを配置したWidgetの状態(今回はForm)に、同じ State クラス内のどこからでもアクセスできる。
+  // Form全体を管理。このキーを配置したWidgetの状態(今回はForm)に、同じ State クラス内のどこからでもアクセスできる。
   final _formKey = GlobalKey<FormState>();
+  // TextEditingController は TextFormField を管理し、テキストの変更・取得・クリアを制御できる。
+  final TextEditingController trainingNameController = TextEditingController();
   final DatabaseHelper dbHelper = DatabaseHelper.instance;
 
   @override
@@ -39,6 +41,8 @@ class AddMenuState extends State<AddMenu> {
             Form(
               key: _formKey, // このFormの状態を管理する。
               child: TextFormField(
+                // このTextFormFieldの値を制御できる。
+                controller: trainingNameController,
                 decoration: const InputDecoration(
                   // TextFormFieldの見た目を変更するクラス
                   labelText: 'トレーニング名',
@@ -123,15 +127,59 @@ class AddMenuState extends State<AddMenu> {
                   // そして、validate() は validator で定義したルールに従っていたら、nullを返す。
                   if (_formKey.currentState!.validate()) {
                     try {
+                      // training_menuテーブルの要素を取得
+                      List<Map<String, dynamic>> menuLists =
+                          await dbHelper.getMenu();
+                      // trainingNameと重複しているかチェック
+                      bool isDuplicate = menuLists.any((menuList) =>
+                          menuList['training_name'] == trainingName);
+
+                      // 追加しようとしているトレーニング名がすでに登録されていたら、エラーメッセージをだして中断
+                      if (isDuplicate) {
+                        // ✅ すでにある場合はエラーメッセージを表示して処理を中断
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('このトレーニング名はすでに登録されています。もう一度、やり直してください。'),
+                            margin: const EdgeInsets.only(
+                                left: 23, right: 23, bottom: 23),
+                            backgroundColor: Colors.redAccent,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                        return;
+                      }
+
                       Map<String, dynamic> row =
                           insertValue(trainingName, seatHeight, armPosition);
                       await dbHelper.insertMenu(row);
+
+                      // Formをクリアする。
+                      setState(() {
+                        trainingNameController.clear(); // 入力欄をクリア
+                        seatHeight = null; // ドロップダウンの選択値をリセット
+                        armPosition = null;
+                      });
+
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('追加しました！')),
+                        const SnackBar(
+                          backgroundColor: Colors.greenAccent,
+                          content: Text('追加しました！'),
+                          margin:
+                              EdgeInsets.only(left: 23, right: 23, bottom: 23),
+                          behavior: SnackBarBehavior.floating,
+                        ),
                       );
                     } catch (e) {
+                      String errorMessage = e.toString();
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('エラーが発生しました: $e')),
+                        SnackBar(
+                          backgroundColor: Colors.redAccent,
+                          content: Text('エラーが発生しました: $errorMessage'),
+                          margin:
+                              EdgeInsets.only(left: 23, right: 23, bottom: 23),
+                          behavior: SnackBarBehavior.floating,
+                        ),
                       );
                     }
                   }
