@@ -54,15 +54,15 @@ class DatabaseHelper {
     );
   }
 
-  // テーブルのデータを取得
+  /* テーブルのデータを取得・読み込み */
+  // トレーニングメニューテーブルを取得
   Future<List<Map<String, dynamic>>> getMenu() async {
-    // トレーニングメニューテーブル
     final db = await database;
     return await db.query('training_menu');
   }
 
+  // レコードテーブル
   Future<List<Map<String, dynamic>>> getRecord() async {
-    // レコードテーブル
     final db = await database;
     return await db.query('record');
   }

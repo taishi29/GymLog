@@ -5,6 +5,8 @@ import 'package:gymlog/screens/log.dart';
 // component
 import 'package:gymlog/component/top_section.dart';
 import 'package:gymlog/component/custom_drawer.dart';
+// db
+import 'package:gymlog/db/db.dart';
 
 // main関数
 void main() {
@@ -61,27 +63,50 @@ class HomeScreen extends StatelessWidget {
 }
 
 // メニューリスト
-class MenuList extends StatelessWidget {
-  final List<String> menu = [
-    'チェストプレス',
-    'ラットプルダウン',
-    'スクワット',
-    'デッドリフト',
-    'ショルダープレス',
-    '腹筋',
-  ];
+
+class MenuList extends StatefulWidget {
+  const MenuList({super.key});
+
+  @override
+  MenuListState createState() => MenuListState();
+}
+
+class MenuListState extends State<MenuList> {
+  final DatabaseHelper dbHelper = DatabaseHelper.instance;
+  List<Map<String, dynamic>> menuLists = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMenu(); // データを取得する
+  }
+
+  // "fetchMenu()"はデータを取得して UI を更新する
+  Future<void> fetchMenu() async {
+    List<Map<String, dynamic>> fetchedMenu = await dbHelper.getMenu();
+    if (mounted) {
+      setState(() {
+        menuLists = fetchedMenu;
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return ListView.builder(
-        itemCount: menu.length, // リストの長さを指定
+        itemCount: menuLists.length, // リストの長さを指定
         itemBuilder: (context, index) {
           return Container(
             margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
             child: ListTile(
               tileColor: const Color.fromARGB(255, 255, 255, 255),
               title: Text(
-                menu[index],
+                menuLists[index]["training_name"],
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 30),
               ), // リストの各項目を表示
