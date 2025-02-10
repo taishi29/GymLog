@@ -64,8 +64,6 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height; // 画面の高さを取得
-
     return Scaffold(
       appBar: AppBar(
         title: Text('筋トレ記録アプリ'),
@@ -75,16 +73,26 @@ class HomeScreenState extends State<HomeScreen> {
       // (1) CustomDrawerクラスのonMenuUpdatedにfetchMenu関数を渡してインスタンス化
       drawer: CustomDrawer(onMenuUpdated: fetchMenu),
       // メニューボタンがAppBarの左端に表示される。
-      body: Column(
-        children: [
-          SizedBox(
-            height: screenHeight / 3, // 画面の高さの3分の1の高さ
-            child: TopSection(title: 'Hello World!'), // 時刻とトレーニング開始時刻
+      body: CustomScrollView(
+        slivers: [
+          // 上部の `TopSection` を固定する
+          SliverPersistentHeader(
+            pinned: true, // これを `true` にするとスクロールしても `TopSection` が固定される
+            floating: false,
+            delegate: _TopSectionDelegate(),
           ),
-          const Divider(),
-          Expanded(
+          // 区切り線を追加
+          SliverToBoxAdapter(
+            child: const Divider(
+              color: Color.fromARGB(255, 112, 112, 112), // 線の色
+              thickness: 2, // 線の太さ
+              height: 2, // `Divider` の高さ
+            ),
+          ),
+          // `MenuList` のスクロールを有効にする
+          SliverFillRemaining(
             child: MenuList(menuLists: menuLists, isLoading: isLoading),
-          ), // 筋トレメニューリスト
+          ),
         ],
       ),
     );
@@ -138,4 +146,24 @@ class MenuListState extends State<MenuList> {
           );
         });
   }
+}
+
+class _TopSectionDelegate extends SliverPersistentHeaderDelegate {
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Container(
+      color: const Color.fromARGB(255, 255, 255, 255), // 背景色を白にする
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: const TopSection(title: 'Hello! World!'),
+    );
+  }
+
+  @override
+  double get maxExtent => 300; // `TopSection` の高さ
+  @override
+  double get minExtent => 300; // スクロールしても高さを維持
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      false;
 }
