@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymlog/screens/add_menu.dart';
 import 'package:gymlog/screens/log.dart';
-import 'package:gymlog/main.dart';
 
 class CustomDrawer extends StatelessWidget {
   // 関数を代入できる変数
