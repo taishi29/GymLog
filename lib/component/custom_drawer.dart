@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gymlog/screens/add_menu.dart';
 import 'package:gymlog/screens/log.dart';
+import 'package:gymlog/main.dart';
 
 class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({super.key});
+  // 関数を代入できる変数
+  final VoidCallback onMenuUpdated; // fetchMenu関数が入る変数
+
+  const CustomDrawer({super.key, required this.onMenuUpdated});
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +24,19 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text('トレーニングメニューの追加'),
               leading: Icon(Icons.add),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                // add_menu画面に遷移する。
+                final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddMenu()),
+                  // (2) AddMenuにonMenuUpdated(fetchMenu関数)を渡し、AddMenu画面に遷移する。
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddMenu(onMenuUpdated: onMenuUpdated)),
                 );
+                // add_menu画面の保存ボタンを押されたら、trueが返ってきて、以下の処理を実行。
+                if (result == true) {
+                  onMenuUpdated();
+                }
               },
             ),
             ListTile(

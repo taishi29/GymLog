@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gymlog/db/db.dart';
 
 class AddMenu extends StatefulWidget {
-  const AddMenu({super.key});
+  final VoidCallback onMenuUpdated;
+
+  const AddMenu({super.key, required this.onMenuUpdated});
 
   @override
   AddMenuState createState() => AddMenuState();
@@ -136,12 +138,12 @@ class AddMenuState extends State<AddMenu> {
 
                       // 追加しようとしているトレーニング名がすでに登録されていたら、エラーメッセージをだして中断
                       if (isDuplicate) {
-                        // ✅ すでにある場合はエラーメッセージを表示して処理を中断
+                        // すでにある場合はエラーメッセージを表示して処理を中断
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content:
                                 Text('このトレーニング名はすでに登録されています。もう一度、やり直してください。'),
-                            margin: const EdgeInsets.only(
+                            margin: EdgeInsets.only(
                                 left: 23, right: 23, bottom: 23),
                             backgroundColor: Colors.redAccent,
                             behavior: SnackBarBehavior.floating,
@@ -170,6 +172,9 @@ class AddMenuState extends State<AddMenu> {
                           behavior: SnackBarBehavior.floating,
                         ),
                       );
+
+                      // (3) fetchMenu()が実行される。
+                      widget.onMenuUpdated();
                     } catch (e) {
                       String errorMessage = e.toString();
                       ScaffoldMessenger.of(context).showSnackBar(
