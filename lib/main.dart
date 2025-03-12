@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 // screens
-import 'package:gymlog/screens/log.dart';
+import 'package:gymlog/screens/log.dart'; // 記録画面
 // component
-import 'package:gymlog/component/top_section.dart'; // 画面上部の時刻を表示するwidget
-import 'package:gymlog/component/custom_drawer.dart'; // サイドメニューを表示する
+import 'package:gymlog/component/top_section.dart'; // 画面上部の時刻を表示widget
+import 'package:gymlog/component/custom_drawer.dart'; // サイドメニューwidget
+import 'package:gymlog/component/menu_list.dart'; // メニューリストwidget
 // データベース
 import 'package:gymlog/db/db.dart';
 
@@ -48,7 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    fetchMenu(); // training_menuテーブルのデータを取得する関数
+    fetchMenu();
   }
 
   // fetchMenu()：データを取得して UI を更新する関数
@@ -62,13 +63,21 @@ class HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // onItemTap(): メニューリストのタップ時の処理
+  void onItemTap(BuildContext context, int id, int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('筋トレ記録アプリ'),
-        backgroundColor: const Color.fromARGB(255, 191, 255, 168),
-        centerTitle: true,
+        backgroundColor: Colors.white.withAlpha(100),
+        elevation: 0,
       ),
       // (1) CustomDrawerクラスのonMenuUpdatedにfetchMenu関数を渡してインスタンス化
       drawer: CustomDrawer(onMenuUpdated: fetchMenu),
@@ -91,60 +100,15 @@ class HomeScreenState extends State<HomeScreen> {
           ),
           // `MenuList` のスクロールを有効にする
           SliverFillRemaining(
-            child: MenuList(menuLists: menuLists, isLoading: isLoading),
+            child: MenuList(
+              menuLists: menuLists,
+              onItemTap: onItemTap,
+              isLoading: isLoading,
+            ),
           ),
         ],
       ),
     );
-  }
-}
-
-// メニューリスト
-class MenuList extends StatefulWidget {
-  final List<Map<String, dynamic>> menuLists; // データを受け取る変数
-  final bool isLoading;
-
-  // コンストラクタ
-  MenuList({super.key, required this.menuLists, required this.isLoading});
-
-  @override
-  MenuListState createState() => MenuListState();
-}
-
-class MenuListState extends State<MenuList> {
-  @override
-  Widget build(BuildContext context) {
-    if (widget.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return ListView.builder(
-        itemCount: widget.menuLists.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: ListTile(
-              tileColor: const Color.fromARGB(255, 255, 255, 255),
-              title: Text(
-                widget.menuLists[index]["training_name"],
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 30),
-              ), // リストの各項目を表示
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                side: BorderSide(
-                  color: Colors.black, // 枠線の色
-                  width: 2, // 枠線の太さ
-                ),
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LogPage()),
-                );
-              },
-            ),
-          );
-        });
   }
 }
 

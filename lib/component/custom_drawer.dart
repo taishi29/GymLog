@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gymlog/screens/add_menu.dart';
 import 'package:gymlog/screens/log.dart';
+import 'package:gymlog/screens/delete_menu.dart';
 
 class CustomDrawer extends StatelessWidget {
   // 関数を代入できる変数
@@ -32,10 +33,6 @@ class CustomDrawer extends StatelessWidget {
                       builder: (context) =>
                           AddMenu(onMenuUpdated: onMenuUpdated)),
                 );
-                // add_menu画面の保存ボタンを押されたら、trueが返ってきて、以下の処理を実行。
-                if (result == true) {
-                  onMenuUpdated();
-                }
               },
             ),
             ListTile(
@@ -51,10 +48,12 @@ class CustomDrawer extends StatelessWidget {
             ListTile(
               title: Text('トレーニングメニューの削除'),
               leading: Icon(Icons.delete),
-              onTap: () {
-                Navigator.push(
+              onTap: () async {
+                final result = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LogPage()),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          DeleteMenu(onMenuUpdated: onMenuUpdated)),
                 );
               },
             ),
