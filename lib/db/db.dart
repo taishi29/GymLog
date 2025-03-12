@@ -87,5 +87,14 @@ class DatabaseHelper {
         .delete('training_menu', where: 'training_id = ?', whereArgs: [id]);
   }
 
-  // データの編集
+  // トレーニングメニューのデータを更新するメソッド
+  Future<int> updateMenu(int id, Map<String, dynamic> row) async {
+    final db = await database;
+    return await db.update(
+      'training_menu', // 更新するテーブル名
+      row, // 更新するデータ
+      where: 'training_id = ?', // 更新対象の条件
+      whereArgs: [id], // プレースホルダの値
+    );
+  }
 }

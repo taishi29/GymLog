@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gymlog/screens/add_menu.dart';
+import 'package:gymlog/screens/edit_menu.dart';
 import 'package:gymlog/screens/log.dart';
 import 'package:gymlog/screens/delete_menu.dart';
 
@@ -26,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
                 leading: Icon(Icons.add),
                 onTap: () async {
                   // add_menu画面に遷移する。
-                  final result = await Navigator.push(
+                  await Navigator.push(
                     context,
                     // (2) AddMenuにonMenuUpdated(fetchMenu関数)を渡し、AddMenu画面に遷移する。
                     MaterialPageRoute(
@@ -38,10 +39,12 @@ class CustomDrawer extends StatelessWidget {
               ListTile(
                 title: Text('トレーニングメニューの編集'),
                 leading: Icon(Icons.edit),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LogPage()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            EditMenu(onMenuUpdated: onMenuUpdated)),
                   );
                 },
               ),
@@ -49,7 +52,7 @@ class CustomDrawer extends StatelessWidget {
                 title: Text('トレーニングメニューの削除'),
                 leading: Icon(Icons.delete),
                 onTap: () async {
-                  final result = await Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
