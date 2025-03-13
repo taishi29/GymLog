@@ -61,6 +61,17 @@ class DatabaseHelper {
     return await db.query('training_menu');
   }
 
+  // 特定のメニューのデータだけ取得
+  Future<Map<String, dynamic>?> getSelectMenu(int id) async {
+    final db = await database;
+    final List<Map<String, dynamic>> result = await db.query(
+      'training_menu',
+      where: 'training_id = ?',
+      whereArgs: [id],
+    );
+    return result.isNotEmpty ? result.first : null;
+  }
+
   // レコードテーブル
   Future<List<Map<String, dynamic>>> getRecord() async {
     final db = await database;

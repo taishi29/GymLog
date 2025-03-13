@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 // screens
 import 'package:gymlog/screens/log.dart'; // 記録画面
+import 'package:gymlog/screens/log_check.dart'; // 記録確認画面
 // component
 import 'package:gymlog/component/top_section.dart'; // 画面上部の時刻を表示widget
 import 'package:gymlog/component/custom_drawer.dart'; // サイドメニューwidget
 import 'package:gymlog/component/menu_list.dart'; // メニューリストwidget
+import 'package:gymlog/component/bottom_var.dart'; // ボトムバーwidget
 // データベース
 import 'package:gymlog/db/db.dart';
 
@@ -45,6 +47,7 @@ class HomeScreenState extends State<HomeScreen> {
 
   List<Map<String, dynamic>> menuLists = [];
   bool isLoading = true;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -67,8 +70,47 @@ class HomeScreenState extends State<HomeScreen> {
   void onItemTap(BuildContext context, int id, int index) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LogPage()),
+      MaterialPageRoute(builder: (context) => LogPage(id: id)),
     );
+  }
+
+  // BottomNavigationBar のタップ時の処理
+  void _bottomNaviTapped(int index) {
+    if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const LogCheck(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 250), // アニメーション時間
+        ),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+          transitionDuration: const Duration(milliseconds: 125), // アニメーション時間
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -107,6 +149,20 @@ class HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 1, //太さ
+              color: Colors.grey[200]!,
+            ),
+          ),
+        ),
+        child: BottomNavBar(
+          onItemTapped: _bottomNaviTapped,
+          currentIndex: _selectedIndex,
+        ),
       ),
     );
   }

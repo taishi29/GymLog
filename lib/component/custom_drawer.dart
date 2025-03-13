@@ -26,10 +26,8 @@ class CustomDrawer extends StatelessWidget {
                 title: Text('トレーニングメニューの追加'),
                 leading: Icon(Icons.add),
                 onTap: () async {
-                  // add_menu画面に遷移する。
                   await Navigator.push(
                     context,
-                    // (2) AddMenuにonMenuUpdated(fetchMenu関数)を渡し、AddMenu画面に遷移する。
                     MaterialPageRoute(
                         builder: (context) =>
                             AddMenu(onMenuUpdated: onMenuUpdated)),
@@ -69,10 +67,11 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogPage()),
-              );
+              // 何も動作しないようにする
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LogPage()),
+              // );
             },
           ),
           ListTile(
@@ -82,10 +81,11 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogPage()),
-              );
+              // 何も動作しないようにする
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ),
+              // );
             },
           ),
           ListTile(
@@ -95,10 +95,11 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogPage()),
-              );
+              // 何も動作しないようにする
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LogPage()),
+              // );
             },
           ),
           ListTile(
@@ -108,10 +109,11 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LogPage()),
-              );
+              // 何も動作しないようにする
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => LogPage()),
+              // );
             },
           ),
         ],
