@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import 'package:fl_chart/fl_chart.dart';
 // screen
 // component
-
+import 'package:gymlog/component/line_chart.dart';
 // DB
 import 'package:gymlog/db/db.dart';
 
@@ -65,6 +65,7 @@ class LogCheckSelectState extends State<LogCheckSelect> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
             ),
             const SizedBox(height: 8.0),
+            LineChartSample(trainingId: widget.id),
           ],
         ),
       ),
