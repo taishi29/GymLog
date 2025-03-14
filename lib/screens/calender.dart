@@ -90,7 +90,11 @@ class _TrainingCalendarScreenState extends State<TrainingCalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("トレーニングカレンダー")),
+      appBar: AppBar(
+        title: const Text('トレーニングカレンダー'),
+        backgroundColor: const Color.fromARGB(255, 191, 255, 168),
+        centerTitle: true,
+      ),
       body: Column(
         children: [
           TableCalendar(

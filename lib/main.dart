@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'GymLog',
+      title: '筋トレ記録',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
             seedColor: const Color.fromARGB(255, 255, 255, 255)),
@@ -119,9 +119,9 @@ class HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('筋トレ記録アプリ'),
-        backgroundColor: Colors.white.withAlpha(100),
-        elevation: 0,
+        title: const Text('筋トレ記録'),
+        backgroundColor: const Color.fromARGB(255, 191, 255, 168),
+        centerTitle: true,
       ),
       // (1) CustomDrawerクラスのonMenuUpdatedにfetchMenu関数を渡してインスタンス化
       drawer: CustomDrawer(onMenuUpdated: fetchMenu),
