@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gymlog/screens/add_menu.dart';
+import 'package:gymlog/screens/calender.dart';
 import 'package:gymlog/screens/edit_menu.dart';
-import 'package:gymlog/screens/log.dart';
+import 'package:gymlog/screens/form.dart';
+import 'package:gymlog/screens/log_check.dart';
 import 'package:gymlog/screens/delete_menu.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -61,17 +63,16 @@ class CustomDrawer extends StatelessWidget {
             ],
           ),
           ListTile(
-            leading: Icon(Icons.fitness_center),
+            leading: Icon(Icons.auto_stories),
             title: Text(
               '記録の確認',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              // 何も動作しないようにする
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => LogPage()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LogCheck()),
+              );
             },
           ),
           ListTile(
@@ -81,11 +82,11 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              // 何も動作しないようにする
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TrainingCalendarScreen()),
+              );
             },
           ),
           ListTile(
@@ -109,11 +110,10 @@ class CustomDrawer extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             onTap: () {
-              // 何も動作しないようにする
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => LogPage()),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactFormScreen()),
+              );
             },
           ),
         ],

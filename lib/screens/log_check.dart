@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 // component
 import 'package:gymlog/component/menu_list.dart';
 import 'package:gymlog/component/bottom_var.dart';
+import 'package:gymlog/screens/calender.dart';
 //screen
 import 'package:gymlog/screens/log_check_select.dart';
 import 'package:gymlog/main.dart';
+import 'package:gymlog/screens/calender.dart';
 // データベース
 import 'package:gymlog/db/db.dart';
 
@@ -76,14 +78,14 @@ class LogCheckState extends State<LogCheck> {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomeScreen(),
+              TrainingCalendarScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 125), // アニメーション時間
+          transitionDuration: const Duration(milliseconds: 250), // アニメーション時間
         ),
       );
     } else {

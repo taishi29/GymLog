@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-// component
 import 'package:gymlog/db/db.dart';
 
 class LogPage extends StatefulWidget {
@@ -31,18 +29,17 @@ class LogPageState extends State<LogPage> {
   @override
   void initState() {
     super.initState();
-    training_id = widget.id; // `initState()` 内で `widget.id` をセット
+    training_id = widget.id;
     logSelectMenu(training_id);
   }
 
-  // fetchMenu()：データを取得して UI を更新する関数
   Future<void> logSelectMenu(int id) async {
     Map<String, dynamic>? selectMenu =
         await DatabaseHelper.instance.getSelectMenu(id);
 
     if (selectMenu == null) {
       print("データが見つかりませんでした (id: $id)");
-      return; // ここで処理を中断
+      return;
     }
 
     if (mounted) {
@@ -56,7 +53,6 @@ class LogPageState extends State<LogPage> {
     }
   }
 
-  // レコードを挿入するための Map を作成
   Map<String, dynamic> insertValue(int training_id, int? set_number,
       int? weight, int? count, int? minutes, DateTime date) {
     return {
@@ -69,11 +65,26 @@ class LogPageState extends State<LogPage> {
     };
   }
 
+  // 日付選択ダイアログを表示
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: DateTime(2024), // 過去の制限
+      lastDate: DateTime(2030), // 未来の制限
+    );
+    if (picked != null && picked != date) {
+      setState(() {
+        date = picked; // 選択した日付をセット
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('記録'),
+        title: const Text('記録'),
         backgroundColor: const Color.fromARGB(255, 191, 255, 168),
         centerTitle: true,
       ),
@@ -82,58 +93,44 @@ class LogPageState extends State<LogPage> {
           const SizedBox(height: 30),
           Text(
             trainingName ?? "トレーニング",
-            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
+
+          // 日付選択フォーム
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  Text(
-                    "アームの位置",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${armPosition ?? '-'}",
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.cyan,
-                          fontWeight: FontWeight.bold))
-                ],
+              Text(
+                "日付: ${date.year}/${date.month}/${date.day}",
+                style:
+                    const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              Column(
-                children: [
-                  Text(
-                    "シートの高さ",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Text("${seatHeight ?? '-'}",
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.cyan,
-                          fontWeight: FontWeight.bold))
-                ],
+              const SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child: const Text("日付を選択"),
               ),
             ],
           ),
-          const SizedBox(height: 12), // ラインの上にスペース
+          const SizedBox(height: 12),
+
           Divider(
-            thickness: 2, // 線の太さ
-            color: Colors.grey, // 線の色
-            indent: 16, // 左側の余白
-            endIndent: 16, // 右側の余白
+            thickness: 2,
+            color: Colors.grey,
+            indent: 16,
+            endIndent: 16,
           ),
-          const SizedBox(height: 12), // ラインの下にスペース
+          const SizedBox(height: 12),
+
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const Text(
-                    '何セット目？',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
+                  const Text('何セット目？',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0)),
                   const SizedBox(height: 8.0),
                   DropdownButton<int?>(
                     value: set_number,
@@ -146,17 +143,13 @@ class LogPageState extends State<LogPage> {
                       ...List.generate(
                         20,
                         (index) => DropdownMenuItem(
-                          value: index + 1,
-                          child: Text("${index + 1}"),
-                        ),
+                            value: index + 1, child: Text("${index + 1}")),
                       ),
                     ],
                   ),
-                  const Text(
-                    '重さは何kg？',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
+                  const Text('重さは何kg？',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0)),
                   const SizedBox(height: 8.0),
                   DropdownButton<int?>(
                     value: weight,
@@ -169,17 +162,13 @@ class LogPageState extends State<LogPage> {
                       ...List.generate(
                         200,
                         (index) => DropdownMenuItem(
-                          value: index + 1,
-                          child: Text("${index + 1}"),
-                        ),
+                            value: index + 1, child: Text("${index + 1}")),
                       ),
                     ],
                   ),
-                  const Text(
-                    '回数は？',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0),
-                  ),
+                  const Text('回数は？',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 16.0)),
                   const SizedBox(height: 8.0),
                   DropdownButton<int?>(
                     value: count,
@@ -192,13 +181,10 @@ class LogPageState extends State<LogPage> {
                       ...List.generate(
                         100,
                         (index) => DropdownMenuItem(
-                          value: index + 1,
-                          child: Text("${index + 1}"),
-                        ),
+                            value: index + 1, child: Text("${index + 1}")),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 10.0),
 
                   // 保存ボタン
@@ -225,7 +211,7 @@ class LogPageState extends State<LogPage> {
                             SnackBar(
                               backgroundColor: Colors.redAccent,
                               content: Text('エラーが発生しました: $errorMessage'),
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                   left: 23, right: 23, bottom: 23),
                               behavior: SnackBarBehavior.floating,
                             ),

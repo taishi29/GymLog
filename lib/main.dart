@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:gymlog/screens/calender.dart';
 // screens
 import 'package:gymlog/screens/log.dart'; // 記録画面
 import 'package:gymlog/screens/log_check.dart'; // 記録確認画面
+import 'package:gymlog/screens/calender.dart';
 // component
 import 'package:gymlog/component/top_section.dart'; // 画面上部の時刻を表示widget
 import 'package:gymlog/component/custom_drawer.dart'; // サイドメニューwidget
@@ -96,14 +98,14 @@ class HomeScreenState extends State<HomeScreen> {
         context,
         PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
-              const HomeScreen(),
+              TrainingCalendarScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
               child: child,
             );
           },
-          transitionDuration: const Duration(milliseconds: 125), // アニメーション時間
+          transitionDuration: const Duration(milliseconds: 250), // アニメーション時間
         ),
       );
     } else {

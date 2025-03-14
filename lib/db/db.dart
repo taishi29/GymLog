@@ -98,6 +98,11 @@ class DatabaseHelper {
         .delete('training_menu', where: 'training_id = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteRecord(int id) async {
+    final db = await database;
+    return await db.delete('record', where: 'record_id = ?', whereArgs: [id]);
+  }
+
   // トレーニングメニューのデータを更新するメソッド
   Future<int> updateMenu(int id, Map<String, dynamic> row) async {
     final db = await database;
@@ -107,5 +112,15 @@ class DatabaseHelper {
       where: 'training_id = ?', // 更新対象の条件
       whereArgs: [id], // プレースホルダの値
     );
+  }
+
+  // recordテーブルのデータを取得し、training_menuテーブルと結合してトレーニング名を含める
+  Future<List<Map<String, dynamic>>> getRecordWithTrainingName() async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT record.*, training_menu.training_name 
+    FROM record 
+    JOIN training_menu ON record.training_id = training_menu.training_id
+  ''');
   }
 }
